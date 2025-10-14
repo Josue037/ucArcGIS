@@ -2,233 +2,243 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sorteo UC 2025 - Conferencia de usuarios Geotecnologías</title>
+  <link rel="icon" type="image/png" href="./img/uc_logo.png">
   <style>
-    /* ====== ESTILO GLOBAL ====== */
-    body { 
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #fff;
+    * {
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+      height: 100vh;
+      background: black;
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow-x: hidden;
+      justify-content: center;
+      color: white;
     }
 
-    /* ====== VIDEO DE FONDO ====== */
-    video#videoFondo {
+    /* 🎥 VIDEO DE FONDO */
+    #videoFondo {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: -1;
-      filter: brightness(0.45);
     }
 
-    /* ====== LOGO SUPERIOR IZQUIERDO ====== */
+    /* 🖼️ LOGO UC */
     #logoUC {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      width: 140px;
-      opacity: 0.45;
-      filter: drop-shadow(0 0 10px rgba(0,0,0,0.7));
-      z-index: 10;
-      transition: opacity 0.3s ease;
-    }
-    #logoUC:hover {
+      position: absolute;
+      top: 20px;
+      left: 25px;
+      width: 120px;
       opacity: 0.8;
+      filter: drop-shadow(2px 2px 4px #000);
     }
 
-    h2 { 
-      margin-top: 25px;
-      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    /* 🏷️ TÍTULO */
+    h2 {
+      margin-top: 20px;
+      font-size: 26px;
+      font-weight: 600;
       text-align: center;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    #selectorGrupo {
+      margin-top: 10px;
+    }
+
+    #selectorGrupo button {
+      background-color: #6c63ff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 5px;
+      transition: 0.2s;
+    }
+
+    #selectorGrupo button:hover {
+      background-color: #847bff;
+      transform: scale(1.05);
+    }
+
+    #tituloRuleta {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
     }
 
     #contenedor {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
-      align-items: flex-start;
-      width: 100%;
-      max-width: 1300px;
-      gap: 20px;
+      gap: 30px;
       margin-top: 20px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     #participantes, #ganadoresContainer {
-      flex: 1;
-      min-width: 220px;
-      max-height: 80vh;
-      overflow-y: auto;
-      background: rgba(255,255,255,0.08);
-      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
       padding: 15px;
-      box-shadow: inset 0 0 8px rgba(255,255,255,0.2);
+      width: 200px;
+      height: 420px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     #participantes h3, #ganadoresContainer h3 {
-      margin-top: 0;
-      color: #ffe26f;
       text-align: center;
-      text-shadow: 0 0 6px rgba(0,0,0,0.5);
+      margin-bottom: 10px;
+      color: #ffd700;
     }
 
-    .nombre {
-      padding: 5px 8px;
-      margin: 3px 0;
-      border-radius: 8px;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .nombre:hover {
-      transform: scale(1.05);
-    }
-
-    .activo {
-      background: rgba(255,255,255,0.3);
-      font-weight: bold;
-      color: #00ffc3;
+    #listaParticipantes div, #listaGanadores div {
+      margin-bottom: 8px;
+      text-align: center;
+      color: #fff;
     }
 
     #ruletaContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    canvas { 
-      border-radius: 50%; 
-      background: rgba(255,255,255,0.1);
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-      transition: 0.4s;
-      max-width: 50vw;
-      height: auto;
+      position: relative;
     }
 
     #puntero {
-      width: 0; 
-      height: 0; 
-      border-left: 25px solid transparent;
-      border-right: 25px solid transparent;
-      border-bottom: 35px solid #ff0000;
-      margin: 0 auto 10px;
-      transform: rotate(180deg);
-      filter: drop-shadow(0 0 5px rgba(255,255,255,0.6));
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 25px solid #ffd700;
+      z-index: 2;
+    }
+
+    #ruleta {
+      border-radius: 50%;
+      border: 5px solid #fff;
+      background: rgba(0,0,0,0.4);
+      box-shadow: 0 0 30px rgba(255,255,255,0.3);
     }
 
     #botones {
       display: flex;
       justify-content: center;
       margin-top: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
     }
 
-    button { 
-      padding: 10px 18px; 
-      font-size: 16px; 
-      cursor: pointer; 
-      border-radius: 10px;
+    #botones button {
+      background-color: #6c63ff;
       border: none;
-      background: linear-gradient(135deg, #ffd54f, #ffb300);
-      color: #000;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
       font-weight: bold;
-      transition: 0.3s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      transition: 0.2s;
     }
 
-    button:hover {
-      background: linear-gradient(135deg, #ffe082, #ffca28);
+    #botones button:hover {
+      background-color: #847bff;
       transform: scale(1.05);
     }
 
-    #selectorGrupo {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    /* ====== OVERLAY GANADOR ====== */
+    /* 🏆 OVERLAY GANADOR */
     #overlayGanador {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      font-size: 42px;
-      font-weight: bold;
-      color: #00ffc3;
-      text-shadow: 0 0 20px rgba(0,255,195,0.8);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(0,0,0,0.8);
-      padding: 30px 50px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    #textoGanador {
+      background: #6c63ff;
+      padding: 20px 40px;
       border-radius: 20px;
-      z-index: 9999;
+      font-size: 24px;
+      color: white;
       text-align: center;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-      opacity: 0;
+      box-shadow: 0 0 30px rgba(255,255,255,0.3);
+      animation: aparecer 0.5s ease-in-out;
+    }
+
+    @keyframes aparecer {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     #cerrarOverlay {
       position: absolute;
       top: 10px;
       right: 15px;
-      background: none;
-      color: #b26fff;
+      background: none;        /* Sin fondo rojo */
+      color: #9b59b6;          /* Solo la X morada */
       font-weight: bold;
       font-size: 22px;
       border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
       cursor: pointer;
-      box-shadow: none;
+      transition: transform 0.2s;
     }
 
-    /* ====== LOGOS ====== */
+    #cerrarOverlay:hover {
+      transform: scale(1.2);
+      color: #d19ff7;
+    }
+
+    /* LOGOS INFERIORES */
     .logos {
+      position: absolute;
+      bottom: 15px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      margin: 30px 0 20px;
-      gap: 30px;
+      gap: 50px;
+      width: 100%;
     }
 
     .logos img {
-      height: 60px;
-      transition: transform 0.3s;
+      width: 130px;
+      opacity: 0.9;
+      transition: 0.3s;
+      filter: drop-shadow(2px 2px 4px #000);
     }
 
     .logos img:hover {
       transform: scale(1.1);
-    }
-
-    @media (max-width: 850px) {
-      #contenedor {
-        flex-direction: column;
-      }
-      canvas {
-        max-width: 70vw;
-      }
+      opacity: 1;
     }
   </style>
 </head>
+
 <body>
-  <!-- 🎥 VIDEO DE FONDO -->
   <video id="videoFondo" autoplay loop muted playsinline>
-    <source src="https://nube.geotecnologias.co.cr/s/j9RAYEagMJQNrzB/download" type="video/mp4">
+    <source src="mundoUC.mp4" type="video/mp4">
   </video>
 
-  <!-- LOGO UC -->
-  <link rel="icon" type="image/png" href="./img/uc_logo.png">
+  <img id="logoUC" src="./img/uc_logo.png" alt="UC Logo">
 
-  <!-- TÍTULO PRINCIPAL -->
   <h2>Sorteo UC 2025 - Conferencia de usuarios Geotecnologías</h2>
 
   <div id="selectorGrupo">
@@ -248,7 +258,6 @@
     <div id="ruletaContainer">
       <div id="puntero"></div>
       <canvas id="ruleta" width="400" height="400"></canvas>
-
       <div id="botones">
         <button onclick="girar()">🎲 Girar</button>
         <button onclick="actualizarLista()">🔄 Actualizar lista</button>
@@ -261,213 +270,118 @@
     </div>
   </div>
 
-  <!-- 🏆 MENSAJE GANADOR -->
   <div id="overlayGanador">
     <button id="cerrarOverlay" onclick="cerrarOverlay()">✖️</button>
     <div id="textoGanador"></div>
   </div>
 
-  <!-- 🖼️ LOGOS -->
   <div class="logos">
     <img src="./img/logoe.png" alt="Logo E">
     <img src="./img/logog.png" alt="Logo G">
   </div>
 
   <script>
-    const url = "https://services1.arcgis.com/7ToOpQ2UUjs5M3iQ/ArcGIS/rest/services/Asistencia_Usuarios_Esri_Geotecnolog%C3%ADas_Honduras_2025_vista/FeatureServer/0/query?where=1%3D1&outFields=nombre,apellidos&returnGeometry=false&f=json";
-
-    let nombres = [], grupos = [], grupoActual = 0, ganadores = [];
-    let girando = false, startAngle = -Math.PI / 2, animFrame, ganadorTemporal = null;
-
     const canvas = document.getElementById("ruleta");
     const ctx = canvas.getContext("2d");
+    const listaParticipantes = document.getElementById("listaParticipantes");
+    const listaGanadores = document.getElementById("listaGanadores");
+    const textoGanador = document.getElementById("textoGanador");
+    const overlay = document.getElementById("overlayGanador");
+    const tituloRuleta = document.getElementById("tituloRuleta");
 
-    const colores = [
-      "#007bff", "#00bcd4", "#4caf50", "#ffeb3b", "#ff9800", "#e91e63",
-      "#9c27b0", "#3f51b5", "#2196f3", "#009688", "#ff5722", "#cddc39",
-      "#673ab7", "#8bc34a", "#f44336", "#03a9f4", "#795548", "#ffc107",
-      "#00acc1", "#ff6f00"
+    let grupos = [
+      ["Participante 1","Participante 2","Participante 3","Participante 4"],
+      ["Participante 5","Participante 6","Participante 7","Participante 8"],
+      ["Participante 9","Participante 10","Participante 11","Participante 12"]
     ];
+    let grupoActual = 0;
+    let anguloInicio = 0;
+    let girando = false;
 
-    function ajustarCanvas() {
-      let tamaño = Math.min(window.innerWidth * 0.45, 500); 
-      canvas.width = tamaño;
-      canvas.height = tamaño;
-      dibujarRuleta();
-    }
-    window.addEventListener("resize", ajustarCanvas);
+    function dibujarRuleta(){
+      const participantes = grupos[grupoActual];
+      const num = participantes.length;
+      const arco = 2 * Math.PI / num;
 
-    async function cargarDatos() {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Error al obtener datos del servicio");
-        const data = await res.json();
-
-        nombres = data.features.map(f => `${f.attributes.nombre} ${f.attributes.apellidos}`.trim()).filter(Boolean);
-        const tamanoGrupo = Math.ceil(nombres.length / 3);
-        grupos = [];
-        for (let i = 0; i < nombres.length; i += tamanoGrupo)
-          grupos.push(nombres.slice(i, i + tamanoGrupo));
-
-        cambiarGrupo(0);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function cambiarGrupo(indice) {
-      if (!grupos[indice]) return;
-      grupoActual = indice;
-      nombres = grupos[grupoActual].filter(n => !ganadores.includes(n));
-      document.getElementById("tituloRuleta").textContent = `Ruleta ${grupoActual + 1}`;
-      actualizarListaParticipantes();
-      dibujarRuleta();
-    }
-
-    function actualizarListaParticipantes() {
-      const cont = document.getElementById("listaParticipantes");
-      cont.innerHTML = "";
-      nombres.slice(0,10).forEach(n => {
-        const div = document.createElement("div");
-        div.textContent = n;
-        div.className = "nombre";
-        cont.appendChild(div);
-      });
-    }
-
-    function marcarActivo(nombre) {
-      const cont = document.getElementById("listaParticipantes");
-      cont.innerHTML = "";
-      let indexActivo = nombres.indexOf(nombre);
-      let inicio = Math.max(0, indexActivo - 4);
-      let fin = Math.min(nombres.length, inicio + 10);
-      for (let i = inicio; i < fin; i++) {
-        const div = document.createElement("div");
-        div.textContent = nombres[i];
-        div.className = "nombre";
-        if (nombres[i] === nombre) div.classList.add("activo");
-        cont.appendChild(div);
-      }
-    }
-
-    function dibujarRuleta() {
-      if (nombres.length === 0) return;
-      let num = nombres.length;
-      let arc = 2 * Math.PI / num;
-      let radio = canvas.width / 2;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < num; i++) {
-        let angle = startAngle + i * arc;
-        ctx.fillStyle = colores[i % colores.length];
+      for(let i = 0; i < num; i++){
+        const ang = anguloInicio + i * arco;
         ctx.beginPath();
-        ctx.moveTo(radio, radio);
-        ctx.arc(radio, radio, radio, angle, angle + arc);
+        ctx.fillStyle = `hsl(${i * (360 / num)}, 80%, 50%)`;
+        ctx.moveTo(200,200);
+        ctx.arc(200,200,200,ang,ang+arco);
         ctx.fill();
 
         ctx.save();
-        ctx.fillStyle = "white";
-        ctx.translate(radio, radio);
-        ctx.rotate(angle + arc / 2);
+        ctx.translate(200,200);
+        ctx.rotate(ang + arco/2);
         ctx.textAlign = "right";
-        let texto = num > 40 ? nombres[i].split(" ").map(n => n[0]).join("") : nombres[i];
-        ctx.font = `${Math.max(10, radio / (num > 30 ? 25 : 15))}px Arial`;
-        ctx.fillText(texto, radio - 20, 10);
+        ctx.fillStyle = "white";
+        ctx.font = "16px Poppins";
+        ctx.fillText(participantes[i],180,10);
         ctx.restore();
       }
     }
 
-    function girar() {
-      if (girando || nombres.length === 0) return;
+    function actualizarLista(){
+      listaParticipantes.innerHTML = "";
+      grupos[grupoActual].forEach(p=>{
+        const div = document.createElement("div");
+        div.textContent = p;
+        listaParticipantes.appendChild(div);
+      });
+      listaGanadores.innerHTML = "";
+    }
+
+    function cambiarGrupo(indice){
+      grupoActual = indice;
+      tituloRuleta.textContent = "Ruleta " + (indice + 1);
+      actualizarLista();
+      dibujarRuleta();
+    }
+
+    function girar(){
+      if(girando) return;
       girando = true;
+      const participantes = grupos[grupoActual];
+      const num = participantes.length;
+      const giroTotal = Math.random() * 360 + 360 * 5;
+      const duracion = 4000;
+      const inicio = performance.now();
 
-      let vueltas = 5 + Math.random() * 2;
-      let spinTime = 0;
-      let spinTimeTotal = 8000 + Math.random() * 4000;
-      let startAngleInicial = startAngle;
-      let anguloFinal = startAngle + vueltas * 2 * Math.PI + Math.random() * 2 * Math.PI;
-
-      function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-      }
-
-      function rotar() {
-        spinTime += 30;
-        let progress = Math.min(spinTime / spinTimeTotal, 1);
-        let eased = easeOutCubic(progress);
-
-        startAngle = startAngleInicial + (anguloFinal - startAngleInicial) * eased;
-        startAngle %= 2 * Math.PI;
+      function animar(now){
+        const progreso = Math.min((now - inicio) / duracion, 1);
+        const eased = 1 - Math.pow(1 - progreso, 3);
+        anguloInicio = (giroTotal * eased * Math.PI / 180);
+        ctx.clearRect(0,0,400,400);
         dibujarRuleta();
-
-        let num = nombres.length;
-        let arc = 2 * Math.PI / num;
-        let angulo = (startAngle + Math.PI / 2) % (2 * Math.PI);
-        if (angulo < 0) angulo += 2 * Math.PI;
-        let index = Math.floor((2 * Math.PI - angulo) / arc) % num;
-        marcarActivo(nombres[index]);
-
-        if (progress < 1) {
-          animFrame = requestAnimationFrame(rotar);
+        if(progreso < 1){
+          requestAnimationFrame(animar);
         } else {
-          detener();
+          const ganador = Math.floor(num - (anguloInicio / (2 * Math.PI) * num) % num) % num;
+          mostrarGanador(participantes[ganador]);
           girando = false;
         }
       }
-
-      rotar();
+      requestAnimationFrame(animar);
     }
 
-    function mostrarGanadorOverlay(nombre) {
-      const overlay = document.getElementById("overlayGanador");
-      const texto = document.getElementById("textoGanador");
-      texto.textContent = `🎉 Ganador: ${nombre}`;
-      overlay.style.opacity = 1;
-      overlay.style.transform = "translate(-50%, -50%) scale(1)";
+    function mostrarGanador(nombre){
+      textoGanador.textContent = "🎉 ¡Ganador: " + nombre + "!";
+      overlay.style.display = "flex";
+      const div = document.createElement("div");
+      div.textContent = nombre;
+      listaGanadores.appendChild(div);
     }
 
-    function cerrarOverlay() {
-      const overlay = document.getElementById("overlayGanador");
-      overlay.style.opacity = 0;
-      overlay.style.transform = "translate(-50%, -50%) scale(0)";
-
-      if (ganadorTemporal) {
-        const listaG = document.getElementById("listaGanadores");
-        const item = document.createElement("div");
-        item.textContent = ganadorTemporal;
-        item.className = "nombre activo";
-        listaG.prepend(item);
-
-        const index = nombres.indexOf(ganadorTemporal);
-        if (index > -1) nombres.splice(index, 1);
-        actualizarListaParticipantes();
-        if (nombres.length > 0) dibujarRuleta();
-
-        ganadores.push(ganadorTemporal);
-        ganadorTemporal = null;
-      }
+    function cerrarOverlay(){
+      overlay.style.display = "none";
     }
 
-    function detener() {
-      cancelAnimationFrame(animFrame);
-      let num = nombres.length;
-      let arc = 2 * Math.PI / num;
-      let angulo = (startAngle + Math.PI / 2) % (2 * Math.PI);
-      if (angulo < 0) angulo += 2 * Math.PI;
-
-      let index = Math.floor((2 * Math.PI - angulo) / arc) % num;
-      let ganador = nombres[index];
-      ganadorTemporal = ganador;
-      mostrarGanadorOverlay(ganador);
-    }
-
-    function actualizarLista() {
-      cargarDatos();
-    }
-
-    cargarDatos();
-    ajustarCanvas();
+    actualizarLista();
+    dibujarRuleta();
   </script>
 </body>
 </html>
+
+
 
